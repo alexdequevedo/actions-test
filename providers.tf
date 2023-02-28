@@ -2,7 +2,6 @@ terraform {
   required_providers {
     google = {
       source = "hashicorp/google-beta"
-      credentials = "${file("account.json")}"
     }
   }
 
