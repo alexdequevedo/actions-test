@@ -13,6 +13,12 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v3
+    
+    - name: 'GCP Auth'
+      uses: 'google-github-actions/auth@v0'
+      with:
+        credentials_json: '${{ secrets.GCP_TF_CREDENTAILS }}'
+        service_account: 'terraform-service-account@gcp-three-tier-ref-app.iam.gserviceaccount.com'
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2
