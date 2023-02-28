@@ -16,9 +16,9 @@ jobs:
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2
-      with:
-        # terraform_version: 0.13.0
-        cli_config_credentials_token: ${{ secrets.GCP_TF_CREDENTIALS }}
+      # with:
+      #   # terraform_version: 0.13.0
+      #   cli_config_credentials_token: ${{ secrets.GCP_TF_CREDENTIALS }}
 
     - name: Terraform Format
       id: fmt
@@ -27,6 +27,8 @@ jobs:
     - name: Terraform Init
       id: init
       run: terraform init
+      env: 
+        GOOGLE_CREDENTIAL: ${{ secrets.GCP_TF_CREDENTIALS }}
 
     - name: Terraform Validate
       id: validate
@@ -37,6 +39,8 @@ jobs:
       if: github.event_name == 'pull_request'
       run: terraform plan -no-color -input=false
       continue-on-error: true
+      env: 
+        GOOGLE_CREDENTIAL: ${{ secrets.GCP_TF_CREDENTIALS }}
 
     - name: Update Pull Request
       uses: actions/github-script@v6
