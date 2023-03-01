@@ -28,8 +28,8 @@ jobs:
 
     - name: Terraform Init
       run: terraform init
-      env: 
-        GOOGLE_CREDENTAILS: ${{ secrets.GCP_TF_CREDENTAILS }}
+      # env: 
+      #   GOOGLE_CREDENTAILS: ${{ secrets.GCP_TF_CREDENTAILS }}
 
     - name: Terraform Format
       id: fmt
