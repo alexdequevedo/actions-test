@@ -11,6 +11,10 @@ resource "google_storage_bucket" "tf_state" {
   uniform_bucket_level_access = true # Required by organizational policy constraint
   public_access_prevention    = "enforced"
 
+  logging {
+    log_bucket = "f06a2c1ff1e18fb2-bucket-tfstate"
+  }
+
   versioning {
     enabled = true
   }

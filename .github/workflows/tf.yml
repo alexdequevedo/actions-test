@@ -43,13 +43,14 @@ jobs:
       with:
         directory: ./
         framework: terraform
+        output_format: json
       continue-on-error: true
 
     - name: Upload Checkov Results
       uses: actions/upload-artifact@v3
       with:
-        name: checkov-results.sarif
-        path: results.sarif
+        name: checkov-results.json
+        path: results.json
 
     - name: 'GCP Auth'
       uses: 'google-github-actions/auth@v0'
