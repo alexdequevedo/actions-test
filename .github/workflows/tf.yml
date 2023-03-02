@@ -22,7 +22,13 @@ jobs:
     - name: Run tfsec
       id: tfsec
       uses: aquasecurity/tfsec-action@v1.0.0
+      with:
+        format: json
+        out: tfsec-results.json
       continue-on-error: true
+      run: |
+        echo "### Tfsec results" >> $GITHUB_STEP_SUMMARY
+        cat tfsec-results.json >> $GITHUB_STEP_SUMMARY
 
     - name: Set up Python 3.8
       uses: actions/setup-python@v1
@@ -73,6 +79,8 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
+          const { owner, repo } = context.repo;
+          const runId = context.runId;
           const output = `
           #### Tfsec \`${{ steps.tfsec.outcome }}\`
           #### Checkov \`${{ steps.checkov.outcome }}\`
@@ -89,6 +97,8 @@ jobs:
 
           </details>
 
+          Link to the workflow run can be found [here](https://github.com/${owner}/${repo}/actions/runs/${runId})
+
           *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
 
           github.rest.issues.createComment({
@@ -101,10 +111,3 @@ jobs:
     - name: Terraform Plan Status
       if: steps.plan.outcome == 'failure'
       run: exit 1
-
-    - name: Terraform Apply
-      run: terraform apply --auto-approve
-
-    # - name: Terraform Apply
-    #   if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    #   run: terraform apply -auto-approve -input=false
