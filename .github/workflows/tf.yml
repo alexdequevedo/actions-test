@@ -19,6 +19,7 @@ jobs:
     # - name: Dump Context
     #   run: echo ${{ github.context }}
 
+    # Need to find how to exclude certain rules
     - name: Run tfsec
       id: tfsec
       uses: aquasecurity/tfsec-action@v1.0.0
@@ -63,6 +64,7 @@ jobs:
       uses: hashicorp/setup-terraform@v2
 
     - name: Terraform Init
+      id: init
       run: terraform init
 
     - name: Terraform Format
