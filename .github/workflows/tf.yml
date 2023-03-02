@@ -26,6 +26,8 @@ jobs:
         format: json
         out: tfsec-results.json
       continue-on-error: true
+
+    - name: Write TFSEC to Step Summary
       run: |
         echo "### Tfsec results" >> $GITHUB_STEP_SUMMARY
         cat tfsec-results.json >> $GITHUB_STEP_SUMMARY
