@@ -32,10 +32,10 @@ jobs:
     #     echo "### Tfsec results" >> $GITHUB_STEP_SUMMARY
     #     cat tfsec-results.json >> $GITHUB_STEP_SUMMARY
 
-    - name: Set up Python 3.8
-      uses: actions/setup-python@v1
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v4
       with:
-        python-version: 3.8
+        python-version: 3.9
 
     - name: Test with Checkov
       id: checkov
@@ -44,6 +44,12 @@ jobs:
         directory: ./
         framework: terraform
       continue-on-error: true
+
+    - name: Upload Checkov Results
+      uses: actions/upload-artifact@v3
+      with:
+        name: checkov-results.sarif
+        path: results.sarif
 
     - name: 'GCP Auth'
       uses: 'google-github-actions/auth@v0'
