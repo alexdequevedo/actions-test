@@ -1,4 +1,4 @@
-name: 'Terraform'
+name: Terraform Plan
 
 on:
   pull_request:
@@ -11,7 +11,6 @@ jobs:
     permissions:
       pull-requests: write
 
-
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -22,29 +21,23 @@ jobs:
       with:
         path: |
           ~/.terraform.d/plugin-cache
-          ~/.cache/tfsec
           ~/.cache/checkov
-        key: ${{ runner.os }}-terraform-${{ hashFiles('**/lockfiles') }}
+        key: ${{ runner.os }}-terraform }}
 
-    - name: Dump Context
-      run: echo ${{ github.context }}
-
-    # Need to find how to exclude certain rules
     - name: Run tfsec
       id: tfsec
       uses: aquasecurity/tfsec-action@v1.0.0
-      # with:
-        # github_token: ${{ secrets.GITHUB_TOKEN }}
-        # additional_args: "-e google-storage-bucket-encryption-customer-key "
-        # format: json
-      #   out: tfsec-results.json
+      with:
+        additional_args: "-e google-storage-bucket-encryption-customer-key"
+        format: cli
+        out: reports/tfsec-results.json
       continue-on-error: true
 
-    # - name: Write TFSEC to Step Summary
-    #   run: |
-    #     echo "### Tfsec results" >> $GITHUB_STEP_SUMMARY
-    #     cat tfsec-results.json >> $GITHUB_STEP_SUMMARY
-
+    - name: Upload Tfsec Results
+      uses: actions/upload-artifact@v3
+      with:
+        name: tfsec-results.json
+        path: reports/tfsec-results.json
 
     - name: Test with Checkov
       id: checkov
@@ -52,27 +45,15 @@ jobs:
       with:
         directory: ./
         framework: terraform
-        output_format: cli, json
+        output_format: cli
         output_file_path: reports/checkov-results.json
       continue-on-error: true
 
-    # Need to do only on step failure, also add tfsec
-    # Should also add to summary
     - name: Upload Checkov Results
       uses: actions/upload-artifact@v3
       with:
         name: checkov-results.json
         path: reports/checkov-results.json
-
-    # - name: Summary
-    #   run: |
-    #     echo ${{ steps.tfsec.outputs }} >> $GITHUB_STEP_SUMMARY
-    #     echo ${{ fromJson(env.CHECKOV_RESULTS) }} >> $GITHUB_STEP_SUMMARY
-    #     echo ${{ fromJson(steps.checkov.outputs) }} >> $GITHUB_STEP_SUMMARY
-
-
-    # - name: Early Exit
-    #   run: exit 1
 
     - name: 'GCP Auth'
       uses: 'google-github-actions/auth@v0'
@@ -107,20 +88,12 @@ jobs:
       uses: actions/github-script@v6
       if: github.event_name == 'pull_request'
       env:
-        PLAN: "Terraform\n${{ steps.plan.outputs.stdout }}"
-        TFSEC: "TFSEC\n${{ steps.tfsec.outputs }}"
+        PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
-          const fs = require('fs');
           const { owner, repo } = context.repo;
           const runId = context.runId;
-
-          checkovSummary = github.rest.actions.getArtifact({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            artifact_id: 'checkov-results.json'
-          })
 
           const output = `
           #### Tfsec \`${{ steps.tfsec.outcome }}\`
@@ -134,7 +107,6 @@ jobs:
 
           \`\`\`\n
           ${process.env.PLAN}
-          ${checkovSummary}
           \`\`\`
 
           </details>
