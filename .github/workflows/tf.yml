@@ -102,11 +102,11 @@ jobs:
         script: |
           const { owner, repo } = context.repo;
           const runId = context.runId;
-          const jobId = context.jobId;
+          const jobId = context.job;
 
 
           const output = `
-          #### [Tfsec](https://github.com/${owner}/${repo}/actions/runs/${runId}/jobs/${jobId}) \`${{ steps.tfsec.outcome }}\`
+          #### [Tfsec](https://github.com/${owner}/${repo}/actions/runs/${runId}/jobs/${job}) \`${{ steps.tfsec.outcome }}\`
           #### Checkov \`${{ steps.checkov.outcome }}\`
           #### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
           #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
