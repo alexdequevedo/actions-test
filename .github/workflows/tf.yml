@@ -63,11 +63,11 @@ jobs:
         name: checkov-results.json
         path: reports/checkov-results.json
 
-    - name: Summary
-      run: |
-        echo ${{ steps.tfsec.outputs }} >> $GITHUB_STEP_SUMMARY
-        echo ${{ fromJson(env.CHECKOV_RESULTS) }} >> $GITHUB_STEP_SUMMARY
-        echo ${{ fromJson(steps.checkov.outputs) }} >> $GITHUB_STEP_SUMMARY
+    # - name: Summary
+    #   run: |
+    #     echo ${{ steps.tfsec.outputs }} >> $GITHUB_STEP_SUMMARY
+    #     echo ${{ fromJson(env.CHECKOV_RESULTS) }} >> $GITHUB_STEP_SUMMARY
+    #     echo ${{ fromJson(steps.checkov.outputs) }} >> $GITHUB_STEP_SUMMARY
 
 
     # - name: Early Exit
