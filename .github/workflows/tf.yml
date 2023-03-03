@@ -103,7 +103,7 @@ jobs:
 
 
           const output = `
-          #### [Tfsec](https://github.com/${owner}/${repo}/runs/${{github.run_id}}?check_suite_focus=true#step:3:tfsec) \`${{ steps.tfsec.outcome }}\`
+          #### [Tfsec](https://github.com/${owner}/${repo}/actions/runs/${{github.run_id}}/jobs/${github.job}) \`${{ steps.tfsec.outcome }}\`
           #### Checkov \`${{ steps.checkov.outcome }}\`
           #### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
           #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
