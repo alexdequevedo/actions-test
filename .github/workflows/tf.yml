@@ -115,7 +115,7 @@ jobs:
           const fs = require('fs');
           const { owner, repo } = context.repo;
           const runId = context.runId;
-          let checkovResults = fs.readFileSync('checkov-results.json');
+          let checkovResults = fs.readFileSync('${$GITHUB_WORKSPACE}/checkov-results.json');
           let checkovSummary = JSON.parse(checkovResults);
 
           const output = `
