@@ -117,7 +117,7 @@ jobs:
 
           \`\`\`\n
           ${process.env.PLAN}
-          ${process.env.TFSEC}
+          ${JSON.stringify(process.env.TFSEC, null, 4)}
           \`\`\`
 
           </details>
