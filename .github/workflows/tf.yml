@@ -115,8 +115,12 @@ jobs:
           const fs = require('fs');
           const { owner, repo } = context.repo;
           const runId = context.runId;
-          let checkovResults = fs.readFileSync('reports/checkov-results.json');
-          let checkovSummary = JSON.parse(checkovResults);
+
+          checkovSummary = github.rest.actions.getArtifact({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            artifact_id: checkov-results.json
+          })
 
           const output = `
           #### Tfsec \`${{ steps.tfsec.outcome }}\`
