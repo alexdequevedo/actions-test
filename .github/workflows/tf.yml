@@ -51,7 +51,7 @@ jobs:
       with:
         directory: ./
         framework: terraform
-        output_format: json
+        output_format: cli, json
         output_file_path: reports/checkov-results.json
       continue-on-error: true
 
@@ -66,7 +66,7 @@ jobs:
     - name: Summary
       run: |
         echo ${{ steps.tfsec.outputs }} >> $GITHUB_STEP_SUMMARY
-        echo '${{ env.CHECKOV_RESULTS.summary }}' >> $GITHUB_STEP_SUMMARY
+        echo '${{ fromJson(steps.tfsec.outputs).summary }}' >> $GITHUB_STEP_SUMMARY
 
 
     - name: Early Exit
@@ -115,6 +115,7 @@ jobs:
           const tfsecOutput = `${{ steps.tfsec.outputs.stdout }}`;
           console.log(tfsecOutput)
           console.log(${process.env.TFSEC})
+          const checkov =
 
           const output = `
           #### Tfsec \`${{ steps.tfsec.outcome }}\`
