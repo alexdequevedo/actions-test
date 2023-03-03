@@ -28,9 +28,12 @@ jobs:
       id: tfsec
       uses: aquasecurity/tfsec-action@v1.0.0
       with:
-        additional_args: "-e google-storage-bucket-encryption-customer-key"
-        format: cli
-        out: reports/tfsec-results.json
+        additional_args: |
+          "
+          -e google-storage-bucket-encryption-customer-key
+          --tfvars-file terraform.tfvars
+          --out reports/reports/tfsec-results.json
+          "
       continue-on-error: true
 
     - name: Upload Tfsec Results
