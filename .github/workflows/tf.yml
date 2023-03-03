@@ -32,7 +32,7 @@ jobs:
     - name: Run tfsec
       id: tfsec
       uses: aquasecurity/tfsec-action@v1.0.0
-      with:
+      # with:
         # github_token: ${{ secrets.GITHUB_TOKEN }}
         # additional_args: "-e google-storage-bucket-encryption-customer-key "
         # format: json
