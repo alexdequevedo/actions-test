@@ -28,17 +28,18 @@ jobs:
       id: tfsec
       uses: aquasecurity/tfsec-action@v1.0.0
       with:
-        format: default, json
         additional_args: |
-          --tfvars-file terraform.tfvars
+          --format default, json
           --out tfsec-results
+          --tfvars-file terraform.tfvars
+
       continue-on-error: true
 
     - name: Upload Tfsec Results
       uses: actions/upload-artifact@v3
       with:
         name: tfsec-results.json
-        path: tfsec-results.json
+        path: tfsec-results
 
     - name: Test with Checkov
       id: checkov
