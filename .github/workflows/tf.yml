@@ -23,6 +23,7 @@ jobs:
         path: |
           ~/.terraform.d/plugin-cache
           ~/.cache/tfsec
+          ~/.cache/checkov
         key: ${{ runner.os }}-terraform-${{ hashFiles('**/lockfiles') }}
 
     - name: Dump Context
@@ -114,9 +115,6 @@ jobs:
           const fs = require('fs');
           const { owner, repo } = context.repo;
           const runId = context.runId;
-          # const tfsecOutput = `${{ steps.tfsec.outputs.stdout }}`;
-          # console.log(tfsecOutput)
-          # console.log(${process.env.TFSEC})
           let checkovResults = fs.readFileSync('checkov-results.json');
           let checkovSummary = JSON.parse(checkovResults);
 
