@@ -44,10 +44,6 @@ jobs:
     #     echo "### Tfsec results" >> $GITHUB_STEP_SUMMARY
     #     cat tfsec-results.json >> $GITHUB_STEP_SUMMARY
 
-    # - name: Set up Python 3.9
-    #   uses: actions/setup-python@v4
-    #   with:
-    #     python-version: 3.9
 
     - name: Test with Checkov
       id: checkov
@@ -99,11 +95,15 @@ jobs:
       if: github.event_name == 'pull_request'
       env:
         PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+        TFSEC: "TFSEC\n${{ steps.tfsec.outputs.stdout }}"
+        CHECKOV: "CHECKOV\n${{ steps.checkov.outputs.stdout }}"
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
           const { owner, repo } = context.repo;
           const runId = context.runId;
+
+
           const output = `
           #### Tfsec \`${{ steps.tfsec.outcome }}\`
           #### Checkov \`${{ steps.checkov.outcome }}\`
@@ -112,7 +112,7 @@ jobs:
           #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
           #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
 
-          <details><summary>Show Plan</summary>
+          <details><summary>Show Plan, Tfsec, Checkov</summary>
 
           \`\`\`\n
           ${process.env.PLAN}
