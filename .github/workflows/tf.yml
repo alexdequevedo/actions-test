@@ -65,7 +65,7 @@ jobs:
 
     - name: Summary
       run: |
-        echo ${{ steps.tfsec.outputs.* }} >> $GITHUB_STEP_SUMMARY
+        echo ${{ steps.tfsec.outputs.results }} >> $GITHUB_STEP_SUMMARY
         echo ${{ steps.checkov.outputs }} >> $GITHUB_STEP_SUMMARY
 
 
