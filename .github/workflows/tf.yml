@@ -34,7 +34,7 @@ jobs:
       uses: aquasecurity/tfsec-action@v1.0.0
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        additional_args: "-e google-storage-bucket-encryption-customer-key "
+        # additional_args: "-e google-storage-bucket-encryption-customer-key "
       #   format: json
       #   out: tfsec-results.json
       continue-on-error: true
