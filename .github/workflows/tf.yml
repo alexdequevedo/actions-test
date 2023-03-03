@@ -66,6 +66,7 @@ jobs:
     - name: Summary
       run: |
         echo ${{ steps.tfsec.outputs }} >> $GITHUB_STEP_SUMMARY
+        echo ${{ fromJson(env.CHECKOV_RESULTS) }} >> $GITHUB_STEP_SUMMARY
         echo ${{ fromJson(steps.checkov.outputs) }} >> $GITHUB_STEP_SUMMARY
 
 
@@ -110,12 +111,14 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
+          const fs = require('fs');
           const { owner, repo } = context.repo;
           const runId = context.runId;
           const tfsecOutput = `${{ steps.tfsec.outputs.stdout }}`;
           console.log(tfsecOutput)
           console.log(${process.env.TFSEC})
-          const checkov =
+          let checkovResults = fs.readFileSync('checkov-results.json');
+          let checkovSummary = JSON.parse(checkovResults).summary
 
           const output = `
           #### Tfsec \`${{ steps.tfsec.outcome }}\`
@@ -129,6 +132,7 @@ jobs:
 
           \`\`\`\n
           ${process.env.PLAN}
+          ${checkovSummary}
           \`\`\`
 
           </details>
