@@ -104,6 +104,8 @@ jobs:
           const { owner, repo } = context.repo;
           const runId = context.runId;
           const tfsecOutput = `${{ steps.tfsec.outputs.stdout }}`;
+          console.log(tfsecOutput)
+          console.log(${process.env.TFSEC})
 
           const output = `
           #### Tfsec \`${{ steps.tfsec.outcome }}\`
@@ -117,7 +119,6 @@ jobs:
 
           \`\`\`\n
           ${process.env.PLAN}
-          ${JSON.stringify(process.env.TFSEC, null, 4)}
           \`\`\`
 
           </details>
