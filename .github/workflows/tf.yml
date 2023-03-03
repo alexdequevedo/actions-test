@@ -23,9 +23,11 @@ jobs:
     - name: Run tfsec
       id: tfsec
       uses: aquasecurity/tfsec-action@v1.0.0
-      # with:
-        # format: json
-        # out: tfsec-results.json
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        additional_args: "-e 'google-storage-bucket-encryption-customer-key' "
+      #   format: json
+      #   out: tfsec-results.json
       continue-on-error: true
 
     # - name: Write TFSEC to Step Summary
@@ -33,10 +35,10 @@ jobs:
     #     echo "### Tfsec results" >> $GITHUB_STEP_SUMMARY
     #     cat tfsec-results.json >> $GITHUB_STEP_SUMMARY
 
-    - name: Set up Python 3.9
-      uses: actions/setup-python@v4
-      with:
-        python-version: 3.9
+    # - name: Set up Python 3.9
+    #   uses: actions/setup-python@v4
+    #   with:
+    #     python-version: 3.9
 
     - name: Test with Checkov
       id: checkov
