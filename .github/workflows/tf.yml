@@ -31,7 +31,7 @@ jobs:
         additional_args: |
           -e google-storage-bucket-encryption-customer-key
           --tfvars-file terraform.tfvars
-          --out reports/reports/tfsec-results.json
+          --out reports/tfsec-results.json
       continue-on-error: true
 
     - name: Upload Tfsec Results
