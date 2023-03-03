@@ -35,7 +35,7 @@ jobs:
       with:
         # github_token: ${{ secrets.GITHUB_TOKEN }}
         # additional_args: "-e google-storage-bucket-encryption-customer-key "
-        format: json
+        # format: json
       #   out: tfsec-results.json
       continue-on-error: true
 
@@ -55,6 +55,8 @@ jobs:
         output_file_path: reports/checkov-results.json
       continue-on-error: true
 
+    # Need to do only on step failure, also add tfsec
+    # Should also add to summary
     - name: Upload Checkov Results
       uses: actions/upload-artifact@v3
       with:
@@ -100,10 +102,11 @@ jobs:
         script: |
           const { owner, repo } = context.repo;
           const runId = context.runId;
+          const jobID = context.jobId;
 
 
           const output = `
-          #### [Tfsec](https://github.com/${owner}/${repo}/actions/runs/${{github.run_id}}/jobs/${github.job}) \`${{ steps.tfsec.outcome }}\`
+          #### [Tfsec](https://github.com/${owner}/${repo}/actions/runs/runId/jobs/jobId) \`${{ steps.tfsec.outcome }}\`
           #### Checkov \`${{ steps.checkov.outcome }}\`
           #### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
           #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
