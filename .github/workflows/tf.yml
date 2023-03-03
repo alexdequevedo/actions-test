@@ -97,7 +97,7 @@ jobs:
       if: github.event_name == 'pull_request'
       env:
         PLAN: "Terraform\n${{ steps.plan.outputs.stdout }}"
-        TFSEC: "TFSEC\n${{ steps.tfsec.outputs.stdout }}"
+        TFSEC: "TFSEC\n${{ steps.tfsec.outputs }}"
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
