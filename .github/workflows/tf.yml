@@ -29,7 +29,7 @@ jobs:
       uses: aquasecurity/tfsec-action@v1.0.0
       with:
         additional_args: |
-          --format lovely, json
+          --format json
           --out tfsec-results
           --tfvars-file terraform.tfvars
 
