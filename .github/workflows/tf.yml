@@ -51,8 +51,8 @@ jobs:
       with:
         directory: ./
         framework: terraform
-        output_format: json, cli
-        output_file_path: reports/checkov-results.json
+        output_format: cli
+        # output_file_path: reports/checkov-results.json
       continue-on-error: true
 
     # Need to do only on step failure, also add tfsec
