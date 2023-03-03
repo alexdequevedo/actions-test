@@ -33,9 +33,9 @@ jobs:
       id: tfsec
       uses: aquasecurity/tfsec-action@v1.0.0
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        # github_token: ${{ secrets.GITHUB_TOKEN }}
         # additional_args: "-e google-storage-bucket-encryption-customer-key "
-      #   format: json
+        format: json
       #   out: tfsec-results.json
       continue-on-error: true
 
@@ -51,7 +51,7 @@ jobs:
       with:
         directory: ./
         framework: terraform
-        output_format: json
+        output_format: json, cli
         output_file_path: reports/checkov-results.json
       continue-on-error: true
 
@@ -94,9 +94,7 @@ jobs:
       uses: actions/github-script@v6
       if: github.event_name == 'pull_request'
       env:
-        PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
-        TFSEC: "TFSEC\n${{ steps.tfsec.outputs.stdout }}"
-        CHECKOV: "CHECKOV\n${{ steps.checkov.outputs.stdout }}"
+        PLAN: "Terraform\n${{ steps.plan.outputs.stdout }}"
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
@@ -105,19 +103,17 @@ jobs:
 
 
           const output = `
-          #### Tfsec \`${{ steps.tfsec.outcome }}\`
+          #### [Tfsec](https://github.com/${owner}/${repo}/runs/${{github.run_id}}?check_suite_focus=true#step:3:tfsec) \`${{ steps.tfsec.outcome }}\`
           #### Checkov \`${{ steps.checkov.outcome }}\`
           #### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
           #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
           #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
           #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
 
-          <details><summary>Show Plan, Tfsec, Checkov</summary>
+          <details><summary>Show Plan</summary>
 
           \`\`\`\n
           ${process.env.PLAN}
-          ${process.env.TFSEC}
-          ${process.env.CHECKOV}
           \`\`\`
 
           </details>
