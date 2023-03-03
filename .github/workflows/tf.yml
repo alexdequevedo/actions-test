@@ -51,8 +51,8 @@ jobs:
       with:
         directory: ./
         framework: terraform
-        output_format: cli
-        # output_file_path: reports/checkov-results.json
+        output_format: json
+        output_file_path: reports/checkov-results.json
       continue-on-error: true
 
     # Need to do only on step failure, also add tfsec
@@ -66,7 +66,7 @@ jobs:
     - name: Summary
       run: |
         echo ${{ steps.tfsec.outputs }} >> $GITHUB_STEP_SUMMARY
-        echo '${{ env.CHECKOV_RESULTS }}' >> $GITHUB_STEP_SUMMARY
+        echo '${{ steps.tfsec.outputs.summary }}' >> $GITHUB_STEP_SUMMARY
 
 
     - name: Early Exit
