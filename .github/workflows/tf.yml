@@ -114,11 +114,11 @@ jobs:
           const fs = require('fs');
           const { owner, repo } = context.repo;
           const runId = context.runId;
-          const tfsecOutput = `${{ steps.tfsec.outputs.stdout }}`;
-          console.log(tfsecOutput)
-          console.log(${process.env.TFSEC})
+          # const tfsecOutput = `${{ steps.tfsec.outputs.stdout }}`;
+          # console.log(tfsecOutput)
+          # console.log(${process.env.TFSEC})
           let checkovResults = fs.readFileSync('checkov-results.json');
-          let checkovSummary = JSON.parse(checkovResults).summary
+          let checkovSummary = JSON.parse(checkovResults);
 
           const output = `
           #### Tfsec \`${{ steps.tfsec.outcome }}\`
