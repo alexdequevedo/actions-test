@@ -119,7 +119,7 @@ jobs:
           checkovSummary = github.rest.actions.getArtifact({
             owner: context.repo.owner,
             repo: context.repo.repo,
-            artifact_id: checkov-results.json
+            artifact_id: 'checkov-results.json'
           })
 
           const output = `
