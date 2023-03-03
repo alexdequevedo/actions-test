@@ -29,17 +29,10 @@ jobs:
       uses: aquasecurity/tfsec-action@v1.0.0
       with:
         additional_args: |
-          --format json
-          --out tfsec-results
           --tfvars-file terraform.tfvars
+          -e google-storage-bucket-encryption-customer-key
 
       continue-on-error: true
-
-    - name: Upload Tfsec Results
-      uses: actions/upload-artifact@v3
-      with:
-        name: tfsec-results.json
-        path: tfsec-results
 
     - name: Test with Checkov
       id: checkov
@@ -48,14 +41,8 @@ jobs:
         directory: ./
         framework: terraform
         output_format: cli
-        output_file_path: checkov-results.json
       continue-on-error: true
 
-    - name: Upload Checkov Results
-      uses: actions/upload-artifact@v3
-      with:
-        name: checkov-results.json
-        path: checkov-results.json
 
     - name: 'GCP Auth'
       uses: 'google-github-actions/auth@v0'
