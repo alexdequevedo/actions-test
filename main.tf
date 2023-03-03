@@ -9,6 +9,11 @@ resource "google_storage_bucket" "tf_state" {
   storage_class = "STANDARD"
 
   uniform_bucket_level_access = true # Required by organizational policy constraint
+  public_access_prevention    = "enforced"
+
+  logging {
+    log_bucket = "f06a2c1ff1e18fb2-bucket-tfstate"
+  }
 
   versioning {
     enabled = true
@@ -32,4 +37,21 @@ resource "google_project_iam_member" "tf_iam_member" {
   project = var.project_id
   role    = each.key
   member  = "serviceAccount:${google_service_account.tf_service_account.email}"
+}
+
+
+# Enable APIs
+
+resource "google_project_service" "project" {
+  for_each = toset(["iam.googleapis.com", "storage.googleapis.com", "cloudresourcemanager.googleapis.com", "compute.googleapis.com"])
+
+  project = var.project_id
+  service = each.key
+
+  timeouts {
+    create = "30m"
+    update = "40m"
+  }
+
+  disable_dependent_services = true
 }
