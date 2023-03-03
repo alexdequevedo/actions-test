@@ -102,7 +102,7 @@ jobs:
         script: |
           const { owner, repo } = context.repo;
           const runId = context.runId;
-          const jobID = context.jobId;
+          const jobId = context.jobId;
 
 
           const output = `
