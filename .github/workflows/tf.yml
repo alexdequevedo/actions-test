@@ -116,6 +116,8 @@ jobs:
 
           \`\`\`\n
           ${process.env.PLAN}
+          ${process.env.TFSEC}
+          ${process.env.CHECKOV}
           \`\`\`
 
           </details>
