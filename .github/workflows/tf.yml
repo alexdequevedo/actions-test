@@ -1,7 +1,7 @@
 name: Terraform Plan
 
 on:
-  pull_request:
+  # pull_request:
   workflow_dispatch:
 
 jobs:
@@ -22,7 +22,7 @@ jobs:
         path: |
           ~/.terraform.d/plugin-cache
           ~/.cache/checkov
-        key: ${{ runner.os }}-terraform }}
+        key: ${{ runner.os }}-terraform
 
     - name: Run tfsec
       id: tfsec
