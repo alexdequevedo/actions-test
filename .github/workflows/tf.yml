@@ -22,7 +22,7 @@ jobs:
         path: |
           ~/.terraform.d/plugin-cache
           ~/.cache/checkov
-        key: ${{ runner.os }}-terraform }}
+        key: ${{ runner.os }}-terraform
 
     - name: Run tfsec
       id: tfsec
