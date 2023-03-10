@@ -13,7 +13,7 @@ defaults:
 jobs:
   terraform:
     name: Terraform Apply
-    if: ${{ (github.event.comment.body == '@tf apply')  }}
+    if: ${{ (github.event.comment.body == 'tf apply')  }}
     #&& (github.event.review.state == 'approved')
     runs-on: ubuntu-latest
     permissions:
@@ -30,6 +30,7 @@ jobs:
         run: echo "$GITHUB_CONTEXT"
 
       - name: Update Pull Request
+        id: check
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -40,7 +41,9 @@ jobs:
               pull_number: context.issue.number
             })
 
-            console.log(res)
+            if (res != 'clean'){
+              core.setFailed('mergeable_state is not clean, ensure you have the proper approvals before attempting to Apply.')
+            }
 
 
             //github.rest.issues.createComment({
@@ -49,3 +52,6 @@ jobs:
               //repo: context.repo.repo,
               //body: res
             //})
+
+      - name: View Result
+        run: echo ${{ steps.check.outcome }}
