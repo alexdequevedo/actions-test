@@ -13,7 +13,8 @@ defaults:
 jobs:
   terraform:
     name: Terraform Apply
-    if: ${{ (github.event.comment.body == '@tf apply') && (github.event.review.state == 'approved') }}
+    if: ${{ (github.event.comment.body == '@tf apply')  }}
+    #&& (github.event.review.state == 'approved')
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
