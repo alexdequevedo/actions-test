@@ -28,8 +28,6 @@ jobs:
           GITHUB_CONTEXT: ${{ toJSON(github) }}
         run: echo "$GITHUB_CONTEXT"
 
-      -
-
       - name: Update Pull Request
         uses: actions/github-script@v6
         #if: github.event.review.state == 'approved'
