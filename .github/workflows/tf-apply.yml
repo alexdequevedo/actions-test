@@ -35,14 +35,16 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const errOutput = 'mergeable_state is not clean, ensure you have the proper approvals before attempting to Apply.'
+            const errOutput = 'Apply Failed: mergeable_state is not clean, ensure you have the proper approvals before attempting to Apply.'
             const res = await github.rest.pulls.get({
               owner: context.repo.owner,
               repo: context.repo.repo,
               pull_number: context.issue.number
             })
 
-            if (res != 'clean'){
+            console.log(res)
+
+            if (res.mergeable_state != 'clean'){
               github.rest.issues.createComment({
                 issue_number: context.issue.number,
                 owner: context.repo.owner,
