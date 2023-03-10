@@ -30,7 +30,6 @@ jobs:
         run: echo "$GITHUB_CONTEXT"
 
       - name: Update Pull Request
-        id: check
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -54,5 +53,30 @@ jobs:
               core.setFailed(errOutput)
             }
 
-      - name: Terraform Apply
-        run: terraform plan
+      - name: 'GCP Auth'
+        uses: 'google-github-actions/auth@v0'
+        with:
+          credentials_json: '${{ secrets.GCP_TF_CREDENTAILS }}'
+          service_account: 'terraform-service-account@gcp-three-tier-ref-app.iam.gserviceaccount.com'
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Terraform Init
+        id: init
+        run: terraform init
+
+      - name: Terraform Format
+        id: fmt
+        run: terraform fmt -check
+
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
+
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -no-color -input=false
+        continue-on-error: true
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GCP_TF_CREDENTIALS }}
