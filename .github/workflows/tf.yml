@@ -76,6 +76,14 @@ jobs:
       continue-on-error: true
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.GCP_TF_CREDENTIALS }}
+    
+    - name: Render terraform docs inside the README.md and push changes back to PR branch
+      uses: terraform-docs/gh-actions@v1.0.0
+      with:
+        working-dir: .
+        output-file: README.md
+        output-method: inject
+        git-push: "true"
 
     - name: Update Pull Request
       uses: actions/github-script@v6
