@@ -18,6 +18,8 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v3
+      with:
+        ref: ${{ github.event.pull_request.head.ref }}
 
     - name: Cache dependencies
       id: cache
@@ -80,7 +82,7 @@ jobs:
     - name: Render terraform docs inside the README.md and push changes back to PR branch
       uses: terraform-docs/gh-actions@v1.0.0
       with:
-        working-dir: .
+        working-dir: ./infra
         output-file: README.md
         output-method: inject
         git-push: "true"
