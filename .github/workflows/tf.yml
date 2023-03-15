@@ -31,6 +31,14 @@ jobs:
           ~/.cache/checkov
         key: ${{ runner.os }}-terraform
 
+    - name: Render terraform docs inside the README.md and push changes back to PR branch
+      uses: terraform-docs/gh-actions@v1.0.0
+      with:
+        working-dir: ./infra
+        output-file: README.md
+        output-method: inject
+        git-push: "true"
+
     - name: Run tfsec
       id: tfsec
       uses: aquasecurity/tfsec-action@v1.0.0
