@@ -32,10 +32,8 @@ resource "google_service_account" "tf_service_account" {
 }
 
 resource "google_project_iam_member" "tf_iam_member" {
-  for_each = toset(["roles/editor"]) # Will remove for_each if we just grant editor / admin role rather than individual permissions
-
   project = var.project_id
-  role    = each.key
+  role    = "roles/editor"
   member  = "serviceAccount:${google_service_account.tf_service_account.email}"
 }
 

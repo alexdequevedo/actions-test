@@ -1,7 +1,7 @@
 name: Terraform Plan
 
 on:
-  # pull_request:
+  pull_request:
   workflow_dispatch:
 
 jobs:
@@ -99,6 +99,12 @@ jobs:
           \`\`\`
 
           </details>
+
+          Checkov 
+          ${{ steps.checkov.outputs.stdout }}
+
+          Tfsec
+          ${{ steps.tfsec.outputs.stdout }}
 
           Link to the workflow run can be found [here](https://github.com/${owner}/${repo}/actions/runs/${runId})
 
