@@ -4,16 +4,23 @@ on:
   pull_request:
   workflow_dispatch:
 
+defaults:
+  run:
+    working-directory: ./infra
+
 jobs:
   terraform:
     name: Terraform
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
+      contents: write
 
     steps:
     - name: Checkout
       uses: actions/checkout@v3
+      with:
+        ref: ${{ github.event.pull_request.head.ref }}
 
     - name: Cache dependencies
       id: cache
@@ -22,7 +29,15 @@ jobs:
         path: |
           ~/.terraform.d/plugin-cache
           ~/.cache/checkov
-        key: ${{ runner.os }}-terraform }}
+        key: ${{ runner.os }}-terraform
+
+    - name: Render terraform docs inside the README.md and push changes back to PR branch
+      uses: terraform-docs/gh-actions@v1.0.0
+      with:
+        working-dir: ./infra
+        output-file: README.md
+        output-method: inject
+        git-push: "true"
 
     - name: Run tfsec
       id: tfsec
@@ -72,6 +87,14 @@ jobs:
       continue-on-error: true
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.GCP_TF_CREDENTIALS }}
+    
+    - name: Render terraform docs inside the README.md and push changes back to PR branch
+      uses: terraform-docs/gh-actions@v1.0.0
+      with:
+        working-dir: ./infra
+        output-file: README.md
+        output-method: inject
+        git-push: "true"
 
     - name: Update Pull Request
       uses: actions/github-script@v6
@@ -99,6 +122,10 @@ jobs:
           \`\`\`
 
           </details>
+
+          Checkov 
+          ${process.env.CHECKOV}
+
 
           Link to the workflow run can be found [here](https://github.com/${owner}/${repo}/actions/runs/${runId})
 
