@@ -124,10 +124,8 @@ jobs:
           </details>
 
           Checkov 
-          ${{ steps.checkov.outputs.stdout }}
+          ${{ process.env.CHECKOV }}
 
-          Tfsec
-          ${{ steps.tfsec.outputs.stdout }}
 
           Link to the workflow run can be found [here](https://github.com/${owner}/${repo}/actions/runs/${runId})
 
