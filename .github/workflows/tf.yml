@@ -124,7 +124,7 @@ jobs:
           </details>
 
           Checkov 
-          ${{ process.env.CHECKOV }}
+          ${process.env.CHECKOV}
 
 
           Link to the workflow run can be found [here](https://github.com/${owner}/${repo}/actions/runs/${runId})
